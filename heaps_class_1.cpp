@@ -73,7 +73,8 @@ struct Heap {
     }
 };
 
-// heapification through recursion : TC - O(n)
+// convert a array into heap
+// heapification through recursion : TC - O(log n)
 void heapify(int *arr, int n, int index) {
     int leftIndex = 2 * index;
     int rightIndex = 2 * index + 1;
@@ -102,7 +103,7 @@ void print_heapify(int *arr, int n) {
     cout << "]" << endl;
 }
 
-// heap sort - TC O(logn)
+// heap sort - TC O(n log(n))
 void heap_sort(int *arr, int n) {
     while(n != 1) {
         swap(arr[1], arr[n]);
