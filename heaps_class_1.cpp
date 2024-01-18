@@ -114,29 +114,29 @@ void heap_sort(int *arr, int n) {
 
 int main() {
 
-    // int n, x;
-    // cout << "enter the size of your array : ";
-    // cin >> n;
-    // Heap h(n);
-    // cout << "enter the array to implement heap :" << endl;
-    // for(int i=0; i<h.capacity; ++i) {
-    //     cin >> x;
-    //     h.insertion(x);
-    // }
-    // h.print_heap();
-    // int deleted_node = h.deletion();
-    // cout << "deleted node from the heap is : " << deleted_node << endl;
-    // h.print_heap();
+    int n, x;
+    cout << "enter the size of your array : ";
+    cin >> n;
+    Heap h(n);
+    cout << "enter the array to implement heap :" << endl;
+    for(int i=0; i<h.capacity; ++i) {
+        cin >> x;
+        h.insertion(x);
+    }
+    h.print_heap();
+    int deleted_node = h.deletion();
+    cout << "deleted node from the heap is : " << deleted_node << endl;
+    h.print_heap();
 
-    int x;
-    cout << "enter the size of array : ";
-    cin >> x;
-    int *arr = new int[x];
-    for(int i=1; i<=x; ++i) 
-        cin >> arr[i];
-    int n = x;
-    build_heap(arr, n);
-    print_heapify(arr, n);
+    // int x;
+    // cout << "enter the size of array : ";
+    // cin >> x;
+    // int *arr = new int[x];
+    // for(int i=1; i<=x; ++i) 
+    //     cin >> arr[i];
+    // int n = x;
+    // build_heap(arr, n);
+    // print_heapify(arr, n);
 
     // heap_sort(arr, n);
     // cout << "array after heap sort : " << endl;
