@@ -279,6 +279,34 @@ void find_median_using_switch(double &median, int element, priority_queue<int> &
             break;
     }
 }
+// method 3: done within class
+class MedianFinder {
+    priority_queue<int> maxHeap;
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+public:
+    // in this fuction we're inserting the upcomming elements in heaps
+    void addNum(int num) {
+        if(maxHeap.size() == 0 || num < maxHeap.top()) 
+            maxHeap.push(num);
+        else 
+            minHeap.push(num);
+        // we're ensuring here that both the heaps should have same no. of elements
+        if(maxHeap.size() < minHeap.size()) {
+            maxHeap.push(minHeap.top());
+            minHeap.pop();  
+        }
+        else if(maxHeap.size() > minHeap.size()+1) {
+            minHeap.push(maxHeap.top());
+            maxHeap.pop();
+        }
+    }
+    // in this fuction we're calculating median from the elements present in both the heaps
+    double findMedian() {
+        if(maxHeap.size() == minHeap.size())
+            return (maxHeap.top() + minHeap.top())/2.0;
+        return maxHeap.top();
+    }
+};
 
 int main() {
 
@@ -314,6 +342,7 @@ int main() {
     // vector<int> stream(n);
     // for(int i=0; i<n; ++i) 
     //     cin >> stream[i];
+    /* this is for method 1 or 2 */
     // double median = 0;
     // priority_queue<int> maxHeap;
     // priority_queue<int, vector<int>, greater<int>> minHeap;
@@ -324,6 +353,17 @@ int main() {
     //     find_median_using_switch(median, element, maxHeap, minHeap);
     //     cout << median << " ";
     // }
+    // cout << "]" << endl;
+    /* this is for method 3 */
+    // vector<int> ans;
+    // MedianFinder m;
+    // for(int i=0; i<n; ++i) {
+    //     m.addNum(stream[i]);
+    //     ans.push_back(m.findMedian());
+    // }
+    // cout << "here is your stream with every possible median :-" << endl << "[ ";
+    // for(double m:ans)
+    //     cout << m << " ";
     // cout << "]" << endl;
 
     return 0;
