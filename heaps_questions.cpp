@@ -2,6 +2,7 @@
 
 using namespace std;
 
+// check if the given binary tree is a heap or not
 struct Node {
     int data;
     Node *left, *right;
@@ -14,9 +15,9 @@ Node* create_binary_tree() {
     if(data == 0)
         return nullptr;
     Node* root = new Node(data);
-    cout << "enter left Node : ";
+    cout << "enter left Node : " << endl;
     root->left = create_binary_tree();
-    cout << "enter right Node : ";
+    cout << "enter right Node : " << endl;
     root->right = create_binary_tree();
     return root;
 }
@@ -49,6 +50,36 @@ bool isMaxOrder(struct Node *root) {
     return ans && l && r;
 }
 
+// merge two binary max heaps
+void heapify(vector<int> &merged, int size, int index) {
+    while(true) {
+        // here we'er doing [0] based indexing
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        int swapIndex = index;
+        if(left < size && merged[left] > merged[swapIndex])
+            swapIndex = left;
+        if(right < size && merged[right] > merged[swapIndex])
+            swapIndex = right;
+        if(index != swapIndex) {
+            swap(merged[index], merged[swapIndex]);
+            index = swapIndex;
+        }
+        else 
+            break;
+    }
+}
+vector<int> merge_heaps(vector<int> &a, vector<int> &b) {
+    // here we're copying/inserting elements from [a] vector to [merged] vector
+    vector<int> merged(a.begin(), a.end());
+    // here we're adding up all the elements of [b] vector to [merged] vector
+    merged.insert(merged.end(), b.begin(), b.end());
+    for(int i=(merged.size() >> 1)-1; i>=0; --i)
+        heapify(merged, merged.size(), i);
+    return merged;
+}
+
+// [k] closest points to origin
 struct myComp {
     bool operator() (pair<int, int> &x, pair<int, int> &y) {
         int distX = (x.first*x.first) + (x.second*x.second);
@@ -73,13 +104,29 @@ vector<vector<int>> k_closest_point(vector<vector<int>> &points, int k) {
 
 int main() {
 
-    Node* root = create_binary_tree();
-    int node_count = nodeCount(root);
-    cout << endl;
-    if(isCBT(root, node_count, 1) && isMaxOrder(root))
-        cout << "the given tree follows the property of max heap" << endl;
-    else 
-        cout << "the given tree doesn't follows the property of max heap" << endl;
+    // Node* root = create_binary_tree();
+    // int node_count = nodeCount(root);
+    // if(isCBT(root, node_count, 1) && isMaxOrder(root))
+    //     cout << "the given tree follows the property of max heap" << endl;
+    // else 
+    //     cout << "the given tree doesn't follows the property of max heap" << endl;
+
+    // int n, m;
+    // cout << "enter the size of 1st or 2nd vector : ";
+    // cin >> n >> m;
+    // cout << "enter the elements of 1st vector : ";
+    // vector<int> a(n);
+    // for(int i=0; i<n; ++i)
+    //     cin >> a[i];
+    // cout << "enter the elements of 2nd vector : ";
+    // vector<int> b(m);
+    // for(int i=0; i<m; ++i)
+    //     cin >> b[i];
+    // vector<int> ans = merge_heaps(a, b);
+    // cout << "here is your merged heap : " << endl << "[ ";
+    // for(int a:ans)
+    //     cout << a << " ";
+    // cout << "]" << endl;
 
     // int rows, cols=2, k;
     // cout << "enter the no. of points and [k] : ";
