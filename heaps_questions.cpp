@@ -233,6 +233,9 @@ int min_refueling_stops(int target, int startFuel, vector<vector<int>> &stations
     int stops = 0, distance = 0, i = 0;
     priority_queue<pair<int, int>> maxHeap; //{fuel, pos}
     while (true) {
+        /*here we're storing each gas station's info about it's fueling capacity
+        and it's position into max heap that lies between the point where
+        we start to the max point where we would travel to*/
         while (i < stations.size()) {
             if (stations[i][0] <= distance + startFuel)
                 maxHeap.push({stations[i][1], stations[i][0]});
@@ -240,21 +243,53 @@ int min_refueling_stops(int target, int startFuel, vector<vector<int>> &stations
                 break;
             ++i;
         }
+        // you have to be known of how much distance you've travelled
         distance += startFuel;
         startFuel = 0;
+        // it means we've enough fuel to reach our target(destination)
         if (distance >= target)
             break;
         if (maxHeap.empty()) {
             stops = -1;
             break;
         }
+        /*here we're selecting the gas station that has the maximum 
+        fueling capacity in between the point we've started to the
+        point where we stopped or to the possible distance we've 
+        travelled with that much of remaining fuel, basically here
+        we're selecting which gas station is the correct station
+        to stop and refuel it from there*/
         auto &top = maxHeap.top();
+        /*here we're calculating the remaining distance + 
+        the fueling capacity of the gas station where we stopped*/
         startFuel = (distance - top.second) + top.first;
         distance = top.second;
         maxHeap.pop();
+        // increment the stops as we've stopped at a gas station to refuel
         ++stops;
     }
     return stops;
+}
+
+// sliding window maximum
+vector<int> max_sliding_window(vector<int> &nums, int k) {
+    priority_queue<pair<int, int>> pq; //{val, index}
+    vector<int> ans;
+    // here we're considering the first window
+    for (int i = 0; i < k; ++i)
+        pq.push({nums[i], i});
+    // here we're pushing the top element from the first window
+    ans.push_back(pq.top().first);
+    // here we're considering the remaining windows
+    for (int i = k; i < nums.size(); ++i) {
+        pq.push({nums[i], i});
+        // here we're removing the max elements that belongs to previous window
+        while (pq.top().second <= i - k)
+            pq.pop();
+            // safely inserting the max element from previous window
+        ans.push_back(pq.top().first);
+    }
+    return ans;
 }
 
 int main() {
@@ -343,6 +378,18 @@ int main() {
     //         cin >> stations[i][j];
     // }
     // cout << "minimum number of stations you've to stop and refuel are : " << min_refueling_stops(target, startFuel, stations);
+
+    // int n, k;
+    // cout << "enter the size of window as well as the size of vector : ";
+    // cin >> k >> n;
+    // vector<int> nums(n);
+    // for(int i=0; i<n; ++i)
+    //     cin >> nums[i];
+    // vector<int> result = max_sliding_window(nums, k);
+    // cout << "here are your max sum of each " << k << " sized window : " << "[ ";
+    // for(int r:result)
+    //     cout << r << " ";
+    // cout << "]" << endl;
 
     return 0 ;
 }
